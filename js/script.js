@@ -11,6 +11,6 @@ let ul = document.getElementById('pokemonList');
 // Loop through the pokemonList array to creat an <li> element for each Pokemon
 pokemonList.forEach(pokemon => {
     let li = document.createElement('li');
-    li.textContent = '${pokemon.name} (height: ${pokemon.height}, type: ${pokemon.type.join(', ')})';
+    li.textContent = `${pokemon.name} (height: ${pokemon.height}, type: ${pokemon.type.join(', ')})`;
     ul.appendChild(li);
 });
