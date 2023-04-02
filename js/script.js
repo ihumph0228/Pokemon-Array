@@ -1,5 +1,6 @@
-//Array of Pokemon. Height is listed as inches
-let pokemonList = [
+//Array of Pokemon. Height is listed as inches create IIFE to avoid global state
+let pokemonRepository = (function() {
+  let pokemonList = [
     {
       name: 'Blastoise', 
       height: "63\"", 
@@ -17,15 +18,28 @@ let pokemonList = [
     }
 ];
 
-// Loop through the pokemonList array to creat an <li> element for each Pokemon
-for (let i = 0; i < pokemonList.length; i++) {
-    let pokemonText = '<p>' + pokemonList[i].name + ' (height: ' + pokemonList[i].height + ')';
+  // Return object with public functions
+  return {
+    getAll: function() {
+      return pokemonList;
+    },
+    add: function(item) {
+      pokemonList.push(item);
+    }
+  };
+})();
+
+// Loop through the pokemonList array using forEach
+pokemonRepository.getAll().forEach(function(pokemon) {
+  let pokemonText = '<p>' + pokemon.name + ' (height: ' + pokemon.height + ')';
+}
+
     
     // Add a message if the Pokemon's height is greater than 50 inches
-    if (parseFloat(pokemonList[i].height) > 50) {
-        pokemonText += ' wow, that is big!';
-    }
+  if (parseFloat(pokemon.height) > 50) {
+      pokemonText += ' wow, that is big!';
+  }
 
     pokemonText += '</p>';
     document.write(pokemonText);
-}
+});
