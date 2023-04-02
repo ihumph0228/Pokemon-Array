@@ -32,12 +32,10 @@ let pokemonRepository = (function() {
 // Loop through the pokemonList array using forEach
 pokemonRepository.getAll().forEach(function(pokemon) {
   let pokemonText = '<p>' + pokemon.name + ' (height: ' + pokemon.height + ')';
-}
-
-    
-    // Add a message if the Pokemon's height is greater than 50 inches
+  
+  // Add a message if the Pokemon's height is greater than 50 inches
   if (parseFloat(pokemon.height) > 50) {
-      pokemonText += ' wow, that is big!';
+    pokemonText += ' wow, that is big!';
   }
 
     pokemonText += '</p>';
