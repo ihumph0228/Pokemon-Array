@@ -77,7 +77,5 @@ let pokemonRepository = (function() {
   };
 })();
 
-// Loop through the pokemonList array using forEach and call the addListItem function for each Pokemon
-pokemonRepository.getAll().forEach(function(pokemon) {
-  pokemonRepository.addListItem(pokemon);
-});
+// Call the addAllPokemon function to add all the Pokemon to the html
+pokemonRepository.addAllPokemon();
