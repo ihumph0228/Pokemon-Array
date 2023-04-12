@@ -18,6 +18,18 @@ let pokemonRepository = (function() {
     }
 ];
 
+// Returns the entire pokmeonList array
+function getAll() {
+  return pokemonList;
+}
+
+//Adds a new Pokemon object to the end of the pokemonList array
+function add(item) {
+  pokemonList.push(item);
+}
+
+
+
   // Return object with public functions
   return {
     getAll: function() {
