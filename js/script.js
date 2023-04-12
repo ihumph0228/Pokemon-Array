@@ -1,5 +1,5 @@
-//Array of Pokemon. Height is listed as inches create IIFE to avoid global state
 let pokemonRepository = (function() {
+  // The array of Pokemon objects
   let pokemonList = [
     {
       name: 'Blastoise', 
@@ -16,51 +16,49 @@ let pokemonRepository = (function() {
       height: "16\"", 
       type: ['Electric'] 
     }
-];
+  ];
 
-// Returns the entire pokmeonList array
-function getAll() {
-  return pokemonList;
-}
+  // Returns the entire pokemonList array
+  function getAll() {
+    return pokemonList;
+  }
 
-//Adds a new Pokemon object to the end of the pokemonList array
-function add(item) {
-  pokemonList.push(item);
-}
+  // Adds a new Pokemon object to the end of the pokemonList array
+  function add(item) {
+    pokemonList.push(item);
+  }
 
-//Creates an li element with a button inside and appens it to the .pokemon-list ul in in index.html
-function addListItem(pokemon) {
-  //Selects the unordered list in index.html
-  let pokemonList = document.querySelector('.pokemon-list');
+  // Creates an li element with a button inside and appends it to the .pokemon-list ul in index.html
+  function addListItem(pokemon) {
+    // Select the unordered list in index.html
+    let pokemonList = document.querySelector('.pokemon-list');
 
-  //Create a new listem item element
-  let listItem = document.createElement('li');
+    // Create a new list item element
+    let listItem = document.createElement('li');
 
-  //Append the list item to the unordered list
-  pokemon.List.appendChild(listItem);
+    // Append the list item to the unordered list
+    pokemonList.appendChild(listItem);
 
-  //Create a new button element
-  let button = document.createElement('button');
+    // Create a new button element
+    let button = document.createElement('button');
 
-  //Set the button's text to the Pokemon's name
-  button.innerText = pokemon.name;
+    // Set the button's text to the Pokemon's name
+    button.innerText = pokemon.name;
 
-  //Add a custom class to the button for styling
-  button.classList.add('button-class');
+    // Add a custom class to the button for styling
+    button.classList.add('button-class');
 
-  //Append the button to the list item
-  listItem.appendChild(button);
-}
+    // Append the button to the list item
+    listItem.appendChild(button);
+  }
 
-
-
-
-  // Return object with public functions
+  // Return an object containing the public functions
   return {
     getAll: getAll,
     add: add,
     addListItem: addListItem
   };
+})();
 
 // Loop through the pokemonList array using forEach and call the addListItem function for each Pokemon
 pokemonRepository.getAll().forEach(function(pokemon) {
