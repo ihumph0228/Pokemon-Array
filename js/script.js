@@ -28,6 +28,31 @@ function add(item) {
   pokemonList.push(item);
 }
 
+//Creates an li element with a button inside and appens it to the .pokemon-list ul in in index.html
+function addListItem(pokemon) {
+  //Selects the unordered list in index.html
+  let pokemonList = document.querySelector('.pokemon-list');
+
+  //Create a new listem item element
+  let listItem = document.createElement('li');
+
+  //Append the list item to the unordered list
+  pokemon.List.appendChild(listItem);
+
+  //Create a new button element
+  let button = document.createElement('button');
+
+  //Set the button's text to the Pokemon's name
+  button.innerText = pokemon.name;
+
+  //Add a custom class to the button for styling
+  button.classList.add('button-class');
+
+  //Append the button to the list item
+  listItem.appendChild(button);
+}
+
+
 
 
   // Return object with public functions
