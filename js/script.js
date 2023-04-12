@@ -24,8 +24,8 @@ let pokemonRepository = (function() {
   }
 
   // Adds a new Pokemon object to the end of the pokemonList array
-  function add(pokemon) {
-    pokemonList.push(pokemon);
+  function add(item) {
+    pokemonList.push(item);
   }
 
   // Creates an li element with a button inside and appends it to the .pokemon-list ul in index.html
@@ -51,14 +51,23 @@ let pokemonRepository = (function() {
     // Append the button to the list item
     listItem.appendChild(button);
     
+    //Add event listener to the button
     button.addEventListener('click', function() {
       showDetails(pokemon);
       });
       }
-
+    
+    // Creates a new function to log the Pokemon details
     function showDetails(pokemon) {
       console.log(pokemon);
     }
+
+    // Loop through the pokemonList array using forEach and call the addListItem function for each Pokemon
+  function addAllPokemon() {
+    pokemonList.forEach(function(pokemon) {
+      addListItem(pokemon);
+    });
+  }
 
   // Return an object containing the public functions
   return {
