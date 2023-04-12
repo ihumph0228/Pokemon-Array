@@ -24,8 +24,8 @@ let pokemonRepository = (function() {
   }
 
   // Adds a new Pokemon object to the end of the pokemonList array
-  function add(item) {
-    pokemonList.push(item);
+  function add(pokemon) {
+    pokemonList.push(pokemon);
   }
 
   // Creates an li element with a button inside and appends it to the .pokemon-list ul in index.html
