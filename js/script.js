@@ -50,7 +50,15 @@ let pokemonRepository = (function() {
 
     // Append the button to the list item
     listItem.appendChild(button);
-  }
+    
+    button.addEventListener('click', function() {
+      showDetails(pokemon);
+      });
+      }
+
+    function showDetails(pokemon) {
+      console.log(pokemon);
+    }
 
   // Return an object containing the public functions
   return {
