@@ -31,7 +31,7 @@ let pokemonRepository = (function() {
   // Creates an li element with a button inside and appends it to the .pokemon-list ul in index.html
   function addListItem(pokemon) {
     // Select the unordered list in index.html
-    let pokemonList = document.querySelector('.pokemon-list');
+    let pokemonList = document.querySelector('#pokemon-list');
 
     // Create a new list item element
     let listItem = document.createElement('li');
@@ -62,12 +62,6 @@ let pokemonRepository = (function() {
       console.log(pokemon);
     }
 
-    // Loop through the pokemonList array using forEach and call the addListItem function for each Pokemon
-  function addAllPokemon() {
-    pokemonList.forEach(function(pokemon) {
-      addListItem(pokemon);
-    });
-  }
 
   // Return an object containing the public functions
   return {
@@ -77,5 +71,7 @@ let pokemonRepository = (function() {
   };
 })();
 
-// Call the addAllPokemon function to add all the Pokemon to the html
-pokemonRepository.addAllPokemon();
+// Loop through the pokemonList array using forEach and call the addListItem function for each Pokemon
+pokemonRepository.getAll().forEach(function(pokemon) {
+  pokemonRepository.addListItem(pokemon);
+});
