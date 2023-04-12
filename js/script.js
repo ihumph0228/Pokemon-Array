@@ -57,16 +57,12 @@ function addListItem(pokemon) {
 
   // Return object with public functions
   return {
-    getAll: function() {
-      return pokemonList;
-    },
-    add: function(item) {
-      pokemonList.push(item);
-    }
+    getAll: getAll,
+    add: add,
+    addListItem: addListItem
   };
-})();
 
-// Loop through the pokemonList array using forEach
+// Loop through the pokemonList array using forEach and call the addListItem function for each Pokemon
 pokemonRepository.getAll().forEach(function(pokemon) {
   pokemonRepository.addListItem(pokemon);
 });
