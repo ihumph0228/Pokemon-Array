@@ -51,7 +51,7 @@ function renderPokemonList() {
   pokemonRepository.getAll().forEach(function(pokemon) {
     var listItemElement = document.createElement('li');
     var linkElement = document.createElement('a');
-    linkElement.href = pokemon.detailsUrl;
+    linkElement.href = '#'; // Set a dummy href to prevent navigating to another website
     linkElement.textContent = pokemon.name;
 
     // Add click event listener on each list item
