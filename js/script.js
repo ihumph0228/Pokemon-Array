@@ -81,7 +81,26 @@ let pokemonRepository = (function() {
       });
     }
 
+    // Load the data from external srouce
+    function LoadList() {
+      return fetch('https://pokeapi.co/api/v2/pokemon/')
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data){
+        data.results.forEach(function(pokemon) {
+          // Call the add() function to add each Pokemon from the resultes to the pokemonList variable
+          add({
+            name: pokemon.name,
+            detailsURL: pokemon.url
+          });
+        });
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
 
+    }
   // Return an object containing the public functions
   return {
     getAll: getAll,
