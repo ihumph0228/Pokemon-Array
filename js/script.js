@@ -70,7 +70,15 @@ let pokemonRepository = (function() {
     
     // Creates a new function to log the Pokemon details
     function showDetails(pokemon) {
-      console.log(pokemon);
+      // Call the loadDetails() function with the Pokemon object as parameter
+      loadDetails(pokemon)
+      .then(function(details) {
+        //Log the Pokemon details in the console
+        console.log(details);
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
     }
 
 
