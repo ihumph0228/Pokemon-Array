@@ -1,6 +1,32 @@
+// Polyfills for promises and fetch
+if (!window.Promise) {
+  window.Promise= Promise;
+}
+
+if (!window.fetch) {
+  window.fetch = function(url) {
+    return new Promise(function(resolve, reject) {
+      var xhr = new XMLHttpRequest();
+      xhr.open('GET', url);
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          resolve(xhr.responseText);
+        } else {
+          reject(Error(xhr.statusText));
+        }
+      };
+      xhr.onerror = function() {
+        reject(Error('Network Error'));
+      };
+      xhr.send();
+    });
+  };
+}
+
+
 let pokemonRepository = (function() {
   // The array of Pokemon objects
-  let pokemonList = [
+  let pokemonList = [];
    
 
   // Returns the entire pokemonList array
