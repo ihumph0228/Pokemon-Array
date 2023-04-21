@@ -1,22 +1,7 @@
 let pokemonRepository = (function() {
   // The array of Pokemon objects
   let pokemonList = [
-    {
-      name: 'Blastoise', 
-      height: "63\"", 
-      type: ['Water']
-    },
-    { 
-      name: 'Butterfree', 
-      height: "43\"", 
-      type: ['Bug, Flying']
-    },
-    { 
-      name: 'Pikachu', 
-      height: "16\"", 
-      type: ['Electric'] 
-    }
-  ];
+   
 
   // Returns the entire pokemonList array
   function getAll() {
