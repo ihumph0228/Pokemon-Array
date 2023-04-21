@@ -1,6 +1,6 @@
 // Polyfills for promises and fetch
 if (!window.Promise) {
-  window.Promise= Promise;
+  window.Promise = Promise;
 }
 
 if (!window.fetch) {
@@ -23,11 +23,9 @@ if (!window.fetch) {
   };
 }
 
-
 let pokemonRepository = (function() {
   // The array of Pokemon objects
   let pokemonList = [];
-   
 
   // Returns the entire pokemonList array
   function getAll() {
@@ -65,51 +63,63 @@ let pokemonRepository = (function() {
     //Add event listener to the button
     button.addEventListener('click', function() {
       showDetails(pokemon);
-      });
-      }
-    
-    // Creates a new function to log the Pokemon details
-    function showDetails(pokemon) {
-      // Call the loadDetails() function with the Pokemon object as parameter
-      loadDetails(pokemon)
+    });
+  }
+
+  // Creates a new function to log the Pokemon details
+  function showDetails(pokemon) {
+    // Call the loadDetails() function with the Pokemon object as parameter
+    loadDetails(pokemon)
       .then(function(details) {
-        //Log the Pokemon details in the console
+        // Log the Pokemon details in the console
         console.log(details);
       })
       .catch(function(error) {
         console.error(error);
       });
-    }
+  }
 
-    // Load the data from external srouce
-    function LoadList() {
-      return fetch('https://pokeapi.co/api/v2/pokemon/')
+  // Load data from external source
+  function LoadList() {
+    return fetch('https://pokeapi.co/api/v2/pokemon/')
       .then(function(response) {
         return response.json();
       })
-      .then(function(data){
+      .then(function(data) {
         data.results.forEach(function(pokemon) {
-          // Call the add() function to add each Pokemon from the resultes to the pokemonList variable
+          // Call the add() function to add each Pokemon from the results to the pokemonList variable
           add({
             name: pokemon.name,
-            detailsURL: pokemon.url
+            detailsUrl: pokemon.url
           });
         });
       })
       .catch(function(error) {
         console.error(error);
       });
+  }
 
-    }
+  // Load Pokemon details from external source
+  function loadDetails(pokemon) {
+    return fetch(pokemon.detailsUrl)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        // Assign some of the details from the response to the Pokemon in the pokemonList
+        pokemon.imgUrl = data.sprites.front_default;
+        pokemon.height = data.height;
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
+  }
+
   // Return an object containing the public functions
   return {
     getAll: getAll,
     add: add,
-    addListItem: addListItem
-  };
-})();
-
-// Loop through the pokemonList array using forEach and call the addListItem function for each Pokemon
-pokemonRepository.getAll().forEach(function(pokemon) {
-  pokemonRepository.addListItem(pokemon);
-});
+    addListItem: addListItem,
+    LoadList: LoadList,
+    loadDetails: loadDetails
+ 
