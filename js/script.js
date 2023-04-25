@@ -100,10 +100,11 @@ function showDetails(pokemon) {
     modalElement.style.display = 'none';
   });
 
-// Add event listener to close the modal when clicking outside of it
-window.addEventListener('click', function(event) {
-  if (event.target == modalElement) {
-    // Hide the modal
-    modalElement.style.display = 'none';
-  }
-});
+  // Add event listener to close the modal when clicking outside of it
+  window.addEventListener('click', function(event) {
+    if (event.target == modalElement) {
+      // Hide the modal
+      modalElement.style.display = 'none';
+    }
+  });
+}
