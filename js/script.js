@@ -82,7 +82,7 @@ function renderPokemonList() {
     listItemElement.appendChild(buttonElement);
     pokemonListElement.appendChild(listItemElement);
     buttonElement.addEventListener('click', function() {
-      showDetails(pokemon);
+      pokemonRepository.showDetails(pokemon); // Call the showDetails function with the clicked Pokémon
     });
   });
 }
