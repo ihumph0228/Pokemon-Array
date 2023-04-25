@@ -62,7 +62,8 @@ function renderPokemonList() {
           return response.json();
         })
         .then(function(data) {
-          console.log(data); // Display the Pokémon object in the console
+          // Call the showDetails() function to display the Pokémon details in a modal
+          showDetails(data);
         })
         .catch(function(error) {
           console.error('Failed to load Pokémon details', error);
@@ -74,8 +75,35 @@ function renderPokemonList() {
   });
 }
 
-// Call the loadList() function to fetch Pokémon data from the API and populate the pokemonList array
-pokemonRepository.loadList().then(function() {
-  // Call the renderPokemonList() function to render the Pokémon list in the HTML
-  renderPokemonList();
+// Function to show the Pokémon details in a modal
+function showDetails(pokemon) {
+  var modalElement = document.getElementById('pokemon-modal');
+  var modalTitleElement = modalElement.querySelector('.modal-title');
+  var modalBodyElement = modalElement.querySelector('.modal-body');
+  var modalImageElement = modalElement.querySelector('.modal-image');
+
+  // Set the modal title and body content
+  modalTitleElement.textContent = 'Name: ' + pokemon.name;
+  modalBodyElement.innerHTML = 'Height: ' + pokemon.height + '<br>' + 'Weight: ' + pokemon.weight;
+
+  // Set the modal image source and alt text
+  modalImageElement.src = pokemon.sprites.front_default;
+  modalImageElement.alt = pokemon.name + ' Image';
+
+  // Show the modal
+  modalElement.style.display = 'block';
+
+  // Add click event listener on modal close button
+  var modalCloseElement = modalElement.querySelector('.modal-close');
+  modalCloseElement.addEventListener('click', function() {
+    // Hide the modal
+    modalElement.style.display = 'none';
+  });
+
+// Add event listener to close the modal when clicking outside of it
+window.addEventListener('click', function(event) {
+  if (event.target == modalElement) {
+    // Hide the modal
+    modalElement.style.display = 'none';
+  }
 });
