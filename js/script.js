@@ -1,6 +1,11 @@
 // Define the pokemonRepository object with methods and properties
 var pokemonRepository = (function() {
   var pokemonList = []; // Array to store the Pokémon data
+  var modalElement = document.getElementById('pokemon-modal');
+  var modalTitleElement = document.getElementById('modal-title');
+  var modalBodyElement = document.getElementById('modal-body');
+  var modalImageElement = document.getElementById('modal-image');
+  var modalCloseElement = document.querySelector('.modal-close');
 
   // Function to add Pokémon data to the pokemonList array
   function add(pokemon) {
@@ -32,11 +37,32 @@ var pokemonRepository = (function() {
       });
   }
 
+  // Function to show the Pokémon details in a modal
+  function showDetails(pokemon) {
+    modalTitleElement.textContent = 'Name: ' + pokemon.name;
+    modalBodyElement.textContent = 'Height: ' + pokemon.height;
+    modalImageElement.src = pokemon.imageUrl;
+    modalElement.classList.add('modal-active');
+  }
+
+  // Close modal when clicking on close button
+  modalCloseElement.addEventListener('click', function() {
+    modalElement.classList.remove('modal-active');
+  });
+
+  // Close modal when clicking outside of it
+  window.addEventListener('click', function(event) {
+    if (event.target == modalElement) {
+      modalElement.classList.remove('modal-active');
+    }
+  });
+
   // Return the public methods and properties
   return {
     add: add,
     getAll: getAll,
-    loadList: loadList
+    loadList: loadList,
+    showDetails: showDetails
   };
 })();
 
@@ -50,61 +76,18 @@ function renderPokemonList() {
   // Loop through the pokemonList array and create list items for each Pokémon
   pokemonRepository.getAll().forEach(function(pokemon) {
     var listItemElement = document.createElement('li');
-    var linkElement = document.createElement('a');
-    linkElement.href = '#'; // Set a dummy href to prevent navigating to another website
-    linkElement.textContent = pokemon.name;
-
-    // Add click event listener on each list item
-    listItemElement.addEventListener('click', function() {
-      // Fetch the Pokémon details from the API
-      fetch(pokemon.detailsUrl)
-        .then(function(response) {
-          return response.json();
-        })
-        .then(function(data) {
-          // Call the showDetails() function to display the Pokémon details in a modal
-          showDetails(data);
-        })
-        .catch(function(error) {
-          console.error('Failed to load Pokémon details', error);
-        });
-    });
-
-    listItemElement.appendChild(linkElement);
+    var buttonElement = document.createElement('button');
+    buttonElement.textContent = pokemon.name;
+    buttonElement.classList.add('pokemon-list-item');
+    listItemElement.appendChild(buttonElement);
     pokemonListElement.appendChild(listItemElement);
+    buttonElement.addEventListener('click', function() {
+      showDetails(pokemon);
+    });
   });
 }
 
-// Function to show the Pokémon details in a modal
-function showDetails(pokemon) {
-  var modalElement = document.getElementById('pokemon-modal');
-  var modalTitleElement = modalElement.querySelector('.modal-title');
-  var modalBodyElement = modalElement.querySelector('.modal-body');
-  var modalImageElement = modalElement.querySelector('.modal-image');
-
-  // Set the modal title and body content
-  modalTitleElement.textContent = 'Name: ' + pokemon.name;
-  modalBodyElement.innerHTML = 'Height: ' + pokemon.height + '<br>' + 'Weight: ' + pokemon.weight;
-
-  // Set the modal image source and alt text
-  modalImageElement.src = pokemon.sprites.front_default;
-  modalImageElement.alt = pokemon.name + ' Image';
-
-  // Show the modal
-  modalElement.style.display = 'block';
-
-  // Add click event listener on modal close button
-  var modalCloseElement = modalElement.querySelector('.modal-close');
-  modalCloseElement.addEventListener('click', function() {
-    // Hide the modal
-    modalElement.style.display = 'none';
-  });
-
-  // Add event listener to close the modal when clicking outside of it
-  window.addEventListener('click', function(event) {
-    if (event.target == modalElement) {
-      // Hide the modal
-      modalElement.style.display = 'none';
-    }
-  });
-}
+// Call the loadList() and renderPokemonList() functions to fetch and display the Pokémon list
+pokemonRepository.loadList().then(function() {
+  renderPokemonList();
+});
