@@ -47,8 +47,8 @@ var pokemonRepository = (function() {
       .then(function(data) {
         // Update the modal content with the Pokémon details
         modalTitleElement.textContent = 'Name: ' + pokemon.name;
-        modalBodyElement.textContent = 'Height: ' + data.height; // Update to display the height property
-        modalImageElement.src = pokemon.imageUrl;
+        modalBodyElement.textContent = 'Height: ' + data.height + ' m';
+        modalImageElement.src = data.sprites.front_default;
         modalElement.classList.add('modal-active');
       })
       .catch(function(error) {
@@ -93,7 +93,7 @@ function renderPokemonList() {
     listItemElement.appendChild(buttonElement);
     pokemonListElement.appendChild(listItemElement);
     buttonElement.addEventListener('click', function() {
-      pokemonRepository.showDetails(pokemon); // Call the showDetails function with the clicked Pokémon
+      pokemonRepository.showDetails(pokemon);
     });
   });
 }
