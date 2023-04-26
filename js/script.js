@@ -39,10 +39,21 @@ var pokemonRepository = (function() {
 
   // Function to show the Pokémon details in a modal
   function showDetails(pokemon) {
-    modalTitleElement.textContent = 'Name: ' + pokemon.name;
-    modalBodyElement.textContent = 'Height: ' + pokemon.height;
-    modalImageElement.src = pokemon.imageUrl;
-    modalElement.classList.add('modal-active');
+    // Fetch additional details of the Pokémon from the detailsUrl
+    fetch(pokemon.detailsUrl)
+      .then(function(response) {
+        return response.json();
+      })
+      .then(function(data) {
+        // Update the modal content with the Pokémon details
+        modalTitleElement.textContent = 'Name: ' + pokemon.name;
+        modalBodyElement.textContent = 'Height: ' + data.height; // Update to display the height property
+        modalImageElement.src = pokemon.imageUrl;
+        modalElement.classList.add('modal-active');
+      })
+      .catch(function(error) {
+        console.error('Failed to load Pokémon details', error);
+      });
   }
 
   // Close modal when clicking on close button
