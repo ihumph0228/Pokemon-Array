@@ -1,6 +1,8 @@
 .pokemon-list-item {
     display: block;
     margin-bottom: 10px;
+    border-bottom: 1px solid lightgreen; /* Add light green line to separate buttons */
+    padding-bottom: 5px; /* Add padding to the bottom of each button */
 }
 
 .modal {
