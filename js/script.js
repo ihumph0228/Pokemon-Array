@@ -76,19 +76,16 @@ var pokemonRepository = (function() {
   };
 })();
 
-// Function to render the Pokémon list in the HTML
 function renderPokemonList() {
-  var pokemonListElement = document.getElementById('pokemon-list');
+  var pokemonListElement = document.querySelector('.list-group');
 
-  // Clear the existing content of the list
   pokemonListElement.innerHTML = '';
 
-  // Loop through the pokemonList array and create list items for each Pokémon
   pokemonRepository.getAll().forEach(function(pokemon) {
     var listItemElement = document.createElement('li');
     var buttonElement = document.createElement('button');
     buttonElement.textContent = pokemon.name;
-    buttonElement.classList.add('pokemon-list-item');
+    buttonElement.classList.add('list-group-item', 'list-group-item-action');
     listItemElement.appendChild(buttonElement);
     pokemonListElement.appendChild(listItemElement);
     buttonElement.addEventListener('click', function() {
@@ -97,7 +94,6 @@ function renderPokemonList() {
   });
 }
 
-// Call the loadList() and renderPokemonList() functions to fetch and display the Pokémon list
 pokemonRepository.loadList().then(function() {
   renderPokemonList();
 });
