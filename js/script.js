@@ -1,10 +1,10 @@
 // Define the pokemonRepository object with methods and properties
 var pokemonRepository = (function() {
-  var pokemonList = [];
+  var pokemonList = []; // Array to store the Pokémon data
   var modalElement = document.getElementById('pokemon-modal');
-  var modalTitleElement = document.querySelector('.modal-title');
-  var modalBodyElement = document.querySelector('.modal-body');
-  var modalImageElement = document.querySelector('.modal-image');
+  var modalTitleElement = document.getElementById('modal-title');
+  var modalBodyElement = document.getElementById('modal-body');
+  var modalImageElement = document.getElementById('modal-image');
   var modalCloseElement = document.querySelector('.modal-close');
 
   // Function to add Pokémon data to the pokemonList array
@@ -37,33 +37,34 @@ var pokemonRepository = (function() {
       });
   }
 
+  // Function to show the Pokémon details in a modal
   function showDetails(pokemon) {
+    // Fetch additional details of the Pokémon from the detailsUrl
     fetch(pokemon.detailsUrl)
       .then(function(response) {
         return response.json();
       })
       .then(function(data) {
-        modalTitleElement.textContent = pokemon.name;
-        modalBodyElement.innerHTML = `
-          <p>Height: ${data.height} m</p>
-          <p>Weight: ${data.weight} kg</p>
-          <p>Type: ${data.types.map(t => t.type.name).join(', ')}</p>
-        `;
+        // Update the modal content with the Pokémon details
+        modalTitleElement.textContent = 'Name: ' + pokemon.name;
+        modalBodyElement.textContent = 'Height: ' + data.height + ' m';
         modalImageElement.src = data.sprites.front_default;
-        modalElement.classList.add('show');
+        modalElement.classList.add('modal-active');
       })
       .catch(function(error) {
         console.error('Failed to load Pokémon details', error);
       });
   }
 
+  // Close modal when clicking on close button
   modalCloseElement.addEventListener('click', function() {
-    modalElement.classList.remove('show');
+    modalElement.classList.remove('modal-active');
   });
 
+  // Close modal when clicking outside of it
   window.addEventListener('click', function(event) {
     if (event.target == modalElement) {
-      modalElement.classList.remove('show');
+      modalElement.classList.remove('modal-active');
     }
   });
 
@@ -76,16 +77,19 @@ var pokemonRepository = (function() {
   };
 })();
 
+// Function to render the Pokémon list in the HTML
 function renderPokemonList() {
-  var pokemonListElement = document.querySelector('.list-group');
+  var pokemonListElement = document.getElementById('pokemon-list');
 
+  // Clear the existing content of the list
   pokemonListElement.innerHTML = '';
 
+  // Loop through the pokemonList array and create list items for each Pokémon
   pokemonRepository.getAll().forEach(function(pokemon) {
     var listItemElement = document.createElement('li');
     var buttonElement = document.createElement('button');
     buttonElement.textContent = pokemon.name;
-    buttonElement.classList.add('list-group-item', 'list-group-item-action');
+    buttonElement.classList.add('pokemon-list-item');
     listItemElement.appendChild(buttonElement);
     pokemonListElement.appendChild(listItemElement);
     buttonElement.addEventListener('click', function() {
@@ -94,6 +98,7 @@ function renderPokemonList() {
   });
 }
 
+// Call the loadList() and renderPokemonList() functions to fetch and display the Pokémon list
 pokemonRepository.loadList().then(function() {
   renderPokemonList();
 });
