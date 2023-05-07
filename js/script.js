@@ -57,15 +57,13 @@ var pokemonRepository = (function() {
       });
   }
 
-  // Close modal when clicking on close button
   modalCloseElement.addEventListener('click', function() {
-    modalElement.classList.remove('modal-active');
+    modalElement.classList.remove('show');
   });
 
-  // Close modal when clicking outside of it
   window.addEventListener('click', function(event) {
     if (event.target == modalElement) {
-      modalElement.classList.remove('modal-active');
+      modalElement.classList.remove('show');
     }
   });
 
