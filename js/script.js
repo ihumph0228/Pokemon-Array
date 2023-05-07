@@ -37,19 +37,20 @@ var pokemonRepository = (function() {
       });
   }
 
-  // Function to show the Pokémon details in a modal
   function showDetails(pokemon) {
-    // Fetch additional details of the Pokémon from the detailsUrl
     fetch(pokemon.detailsUrl)
       .then(function(response) {
         return response.json();
       })
       .then(function(data) {
-        // Update the modal content with the Pokémon details
-        modalTitleElement.textContent = 'Name: ' + pokemon.name;
-        modalBodyElement.textContent = 'Height: ' + data.height + ' m';
+        modalTitleElement.textContent = pokemon.name;
+        modalBodyElement.innerHTML = `
+          <p>Height: ${data.height} m</p>
+          <p>Weight: ${data.weight} kg</p>
+          <p>Type: ${data.types.map(t => t.type.name).join(', ')}</p>
+        `;
         modalImageElement.src = data.sprites.front_default;
-        modalElement.classList.add('modal-active');
+        modalElement.classList.add('show');
       })
       .catch(function(error) {
         console.error('Failed to load Pokémon details', error);
