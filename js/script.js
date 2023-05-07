@@ -1,10 +1,10 @@
 // Define the pokemonRepository object with methods and properties
 var pokemonRepository = (function() {
-  var pokemonList = []; // Array to store the Pokémon data
+  var pokemonList = [];
   var modalElement = document.getElementById('pokemon-modal');
-  var modalTitleElement = document.getElementById('modal-title');
-  var modalBodyElement = document.getElementById('modal-body');
-  var modalImageElement = document.getElementById('modal-image');
+  var modalTitleElement = document.querySelector('.modal-title');
+  var modalBodyElement = document.querySelector('.modal-body');
+  var modalImageElement = document.querySelector('.modal-image');
   var modalCloseElement = document.querySelector('.modal-close');
 
   // Function to add Pokémon data to the pokemonList array
