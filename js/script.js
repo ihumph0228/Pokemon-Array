@@ -1,11 +1,11 @@
 // Define the pokemonRepository object with methods and properties
 var pokemonRepository = (function() {
   var pokemonList = []; // Array to store the Pokémon data
-  var modalElement = document.getElementById('pokemon-modal');
-  var modalTitleElement = document.getElementById('modal-title');
-  var modalBodyElement = document.getElementById('modal-body');
-  var modalImageElement = document.getElementById('modal-image');
-  var modalCloseElement = document.querySelector('.modal-close');
+  var modalElement = document.querySelector('#pokemon-modal');
+  var modalTitleElement = modalElement.querySelector('.modal-title');
+  var modalBodyElement = modalElement.querySelector('.modal-body');
+  var modalImageElement = modalElement.querySelector('.modal-image');
+  var modalCloseElement = modalElement.querySelector('.modal-close');
 
   // Function to add Pokémon data to the pokemonList array
   function add(pokemon) {
@@ -46,8 +46,12 @@ var pokemonRepository = (function() {
       })
       .then(function(data) {
         // Update the modal content with the Pokémon details
-        modalTitleElement.textContent = 'Name: ' + pokemon.name;
-        modalBodyElement.textContent = 'Height: ' + data.height + ' m';
+        modalTitleElement.textContent = pokemon.name;
+        modalBodyElement.innerHTML = `
+          <p><strong>Height:</strong> ${data.height} m</p>
+          <p><strong>Weight:</strong> ${data.weight} kg</p>
+          <p><strong>Abilities:</strong> ${data.abilities.map(function(ability) { return ability.ability.name }).join(', ')}</p>
+        `;
         modalImageElement.src = data.sprites.front_default;
         modalElement.classList.add('modal-active');
       })
@@ -98,7 +102,4 @@ function renderPokemonList() {
   });
 }
 
-// Call the loadList() and renderPokemonList() functions to fetch and display the Pokémon list
-pokemonRepository.loadList().then(function() {
-  renderPokemonList();
-});
+// Call
