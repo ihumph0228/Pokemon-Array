@@ -23,6 +23,10 @@ header {
     cursor: pointer;
   }
   
+  .pokemon-list-item:hover {
+    background-color: #e0e0e0;
+  }
+  
   /* Styles for the modal */
   .modal {
     display: none;
