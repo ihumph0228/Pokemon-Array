@@ -1,75 +1,114 @@
-$(document).ready(function() {
-  // API URL and default values
-  const apiUrl = 'https://pokeapi.co/api/v2/pokemon/';
-  let limit = 10;
-  let offset = 0;
-
-  // Fetch Pokemon data
-  function fetchPokemon() {
-      $.ajax({
-          url: `${apiUrl}?limit=${limit}&offset=${offset}`,
-          method: 'GET'
-      }).done(function(data) {
-          const pokemonList = $('.pokemon-list');
-          pokemonList.empty(); // Clear existing list items
-
-          // Loop through the returned data and add each Pokemon to the list
-          $.each(data.results, function(index, pokemon) {
-              const listItem = $('<li class="list-group-item"></li>');
-              const pokemonLink = $('<a></a>');
-              pokemonLink.text(pokemon.name);
-              pokemonLink.attr('href', '#');
-              pokemonLink.click(function() {
-                  // Display Pokemon details modal when clicked
-                  displayPokemonDetails(`${apiUrl}${pokemon.name}`);
-              });
-              pokemonLink.appendTo(listItem);
-              listItem.appendTo(pokemonList);
-          });
-
-          // Add "Load More" button to load additional Pokemon
-          const loadMoreBtn = $('<button class="btn btn-primary">Load More</button>');
-          loadMoreBtn.click(function() {
-              offset += limit;
-              fetchPokemon();
-          });
-          loadMoreBtn.appendTo($('.container'));
-      });
-  }
-
-  // Fetch individual Pokemon data
-  function fetchPokemonData(url) {
-      return $.ajax({
-          url: url,
-          method: 'GET'
-      });
-  }
-
-  // Display Pokemon details modal
-  function displayPokemonDetails(url) {
-      fetchPokemonData(url).done(function(pokemon) {
-          const pokemonModal = $('#pokemonModal');
-          const pokemonModalLabel = $('#pokemonModalLabel');
-          const pokemonImage = $('#pokemonImage');
-          const pokemonHeight = $('#pokemonHeight');
-          const pokemonWeight = $('#pokemonWeight');
-          const pokemonTypes = $('#pokemonTypes');
-
-          // Update modal content
-          pokemonModalLabel.text(pokemon.name);
-          pokemonImage.attr('src', pokemon.sprites.front_default);
-          pokemonHeight.text(pokemon.height);
-          pokemonWeight.text(pokemon.weight);
-          pokemonTypes.empty();
-          $.each(pokemon.types, function(index, type) {
-              pokemonTypes.append(`<li>${type.type.name}</li>`);
-          });
-
-          // Show the modal
-          pokemonModal.modal('show');
-      });
-  }
-
-  // Fetch and display Pokemon on page load
-  fetchPokemon();
-});
+// Define the pokemonRepository object with methods and properties
+var pokemonRepository = (function () {
+    var pokemonList = []; // Array to store the Pokémon data
+    
+    // Function to add Pokémon data to the pokemonList array
+    function add(pokemon) {
+    pokemonList.push(pokemon);
+    }
+    
+    // Function to get all Pokémon data from the pokemonList array
+    function getAll() {
+    return pokemonList;
+    }
+    
+    // Fetch Pokémon data from the API and call the add() function to populate the pokemonList array
+    function loadList() {
+    return fetch("https://pokeapi.co/api/v2/pokemon/?limit=150")
+    .then(function (response) {
+    return response.json();
+    })
+    .then(function (data) {
+    data.results.forEach(function (item) {
+    var pokemon = {
+    name: item.name,
+    detailsUrl: item.url,
+    };
+    add(pokemon);
+    });
+    })
+    .catch(function (error) {
+    console.error("Failed to load Pokémon list", error);
+    });
+    }
+    
+    function addListItem(pokemon) {
+    let listGroup = document.querySelector("#pokemon-list");
+    let listItem = document.createElement("li");
+    let button = document.createElement("button");
+    button.innerText = pokemon.name;
+    button.classList.add("pokemon");
+    button.classList.add("btn");
+    button.classList.add("btn-primary");
+    listItem.classList.add("list-group-item");
+    button.setAttribute("data-toggle", "modal");
+    button.setAttribute("data-target", "#pokemonModal");
+    button.addEventListener("click", function () {
+    showDetails(pokemon);
+    });
+    listItem.appendChild(button);
+    listGroup.appendChild(listItem);
+    }
+    
+    function showDetails(pokemon) {
+    loadDetails(pokemon).then(function (item) {
+    const modalTitleElement = document.querySelector(".modal-title");
+    const modalImageElement = document.querySelector("#pokemonImage");
+    const modalHeightElement = document.querySelector("#pokemonHeight");
+    $(modalImageElement).attr("src", item.imageURL);
+    $(modalTitleElement).text(pokemon.name);
+    $(modalHeightElement).text(item.height);
+    });
+    }
+    
+    // Function to show the Pokémon details in a modal
+    function loadDetails(item) {
+    return fetch(item.detailsUrl)
+    .then(function (response) {
+    return response.json();
+    })
+    .then(function (details) {
+    item.imageURL = details.sprites.front_default;
+    item.height = details.height;
+    item.types = details.types;
+    return item;
+    })
+    .catch(function (e) {
+    console.error(e);
+    });
+    }
+    
+    // Close modal when clicking on close button
+    // modalCloseElement.addEventListener('click', function() {
+    // modalElement.classList.remove('modal-active');
+    // });
+    
+    // Close modal when clicking outside of it
+    // window.addEventListener('click', function(event) {
+    // if (event.target == modalElement) {
+    // modalElement.classList.remove('modal-active');
+    // }
+    // });
+    
+    // Return the public methods and properties
+    return {
+    add: add,
+    addListItem,
+    getAll: getAll,
+    loadList: loadList,
+    showDetails: showDetails,
+    };
+    })();
+    
+    // Function to render the Pokémon list in the HTML
+    function renderPokemonList() {
+    // Loop through the pokemonList array and create list items for each Pokémon
+    pokemonRepository.loadList().then(function () {
+    pokemonRepository.getAll().forEach(function (pokemon) {
+    pokemonRepository.addListItem(pokemon);
+    });
+    });
+    }
+    
+    renderPokemonList(); // Call the loadList() and renderPokemonList() functions to fetch and display the Pokémon list
+    // pokemonRepository.loadList().then(function()
